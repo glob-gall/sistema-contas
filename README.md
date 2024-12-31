@@ -1,6 +1,6 @@
 ```bash
 # entra na pasta raiz da aplicação
-$ cd backend
+$ cd sistema-contas
 
 # copia as variaveis de ambiente default para .env
 $ cp .env.example .env
@@ -10,6 +10,9 @@ $ docker-compose up -d
 
 # baixa as dependencias
 $ yarn
+
+# roda as migrations no banco
+$ npx prisma migrate dev
 
 # roda a aplicação em desenvolvimento
 $ yarn start:dev

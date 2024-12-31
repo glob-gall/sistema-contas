@@ -12,7 +12,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserByEmail } from './dto/find-user-by-email.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

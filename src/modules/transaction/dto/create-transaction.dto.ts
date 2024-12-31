@@ -10,6 +10,7 @@ import {
 } from 'class-validator';
 import { TransactionStatus } from '../enum/transaction.status.enum';
 import { TransactionType } from '../enum/transaction.type.enum';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 @ValidatorConstraint({ name: 'IsAmountValidForType', async: false })
 class IsAmountValidForType implements ValidatorConstraintInterface {
@@ -35,20 +36,25 @@ class IsAmountValidForType implements ValidatorConstraintInterface {
 }
 
 export class CreateTransactionDto {
+  @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
   @Validate(IsAmountValidForType)
   amount: number;
 
+  @ApiPropertyOptional()
   @IsOptional()
   description?: string | null;
 
+  @ApiPropertyOptional()
   @IsOptional()
   dueDate?: Date | null;
 
+  @ApiProperty({ enum: TransactionStatus })
   @IsEnum(TransactionStatus)
   status: TransactionStatus;
 
+  @ApiProperty({ enum: TransactionType })
   @IsEnum(TransactionType)
   type: TransactionType;
 }

@@ -13,7 +13,12 @@ export class AuthService {
   ) {}
 
   async signIn({ email, password }: SignInUserDto) {
+    console.log(email, password);
+
     const user = await this.userService.getUserByEmail(email);
+    if (!user) throw new InvalidCredentialsError();
+
+    console.log({ user });
 
     const doesPasswordMatches = await compare(password, user.password);
     if (!doesPasswordMatches) throw new InvalidCredentialsError();

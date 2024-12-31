@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { FetchTransactionsQuery } from './dto/fetch-transactions-query.dto';
 
 @Controller('transactions')
 export class TransactionController {
@@ -18,20 +20,8 @@ export class TransactionController {
 
   @UseGuards(AuthGuard)
   @Get()
-  fetchTransactions(@Request() req) {
-    return this.transactionService.fetchAll(req.token.user.id);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('/income')
-  fetchIncomeTransactions(@Request() req) {
-    return this.transactionService.fetchIncomes(req.token.user.id);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('/outcome')
-  fetchOutcomeTransactions(@Request() req) {
-    return this.transactionService.fetchOutcomes(req.token.user.id);
+  fetchTransactions(@Request() req, @Query() query: FetchTransactionsQuery) {
+    return this.transactionService.fetchAll(req.token.user.id, query);
   }
 
   @UseGuards(AuthGuard)

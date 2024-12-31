@@ -3,35 +3,27 @@ import { Transaction } from '@prisma/client';
 import { TransactionRepository } from './transaction.repository';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { FetchTransactionsQuery } from './dto/fetch-transactions-query.dto';
 
 @Injectable()
 export class TransactionService {
   constructor(private transactionRepository: TransactionRepository) {}
 
-  async fetchAll(userId: string): Promise<Transaction[]> {
-    return await this.transactionRepository.fetchAll({
+  async fetchAll(userId: string, query: FetchTransactionsQuery) {
+    const transactions = await this.transactionRepository.fetchAll({
       where: {
         userId,
+        type: query.type,
+        status: query.status,
       },
     });
-  }
 
-  async fetchIncomes(userId: string): Promise<Transaction[]> {
-    return await this.transactionRepository.fetchAll({
-      where: {
-        userId,
-        type: 'INCOME',
-      },
-    });
-  }
+    const total = transactions.reduce((acc, curr) => acc + curr.amount, 0);
 
-  async fetchOutcomes(userId: string): Promise<Transaction[]> {
-    return await this.transactionRepository.fetchAll({
-      where: {
-        userId,
-        type: 'OUTCOME',
-      },
-    });
+    return {
+      transactions,
+      total,
+    };
   }
 
   async createTransaction(

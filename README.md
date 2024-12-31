@@ -17,3 +17,7 @@ $ npx prisma migrate dev
 # roda a aplicação em desenvolvimento
 $ yarn start:dev
 ```
+
+acesse:
+URL: http://localhost:3333/
+DOCUMENTAÇÃO: http://localhost:3333/api
